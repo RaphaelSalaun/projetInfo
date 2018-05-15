@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    tools:context="com.example.xx_laphoune_xx.projetinfo.controller.MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/bienvenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="25dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:text="@string/bienvenue_dans_l_interface_du_jeu"/>
+
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#000000"
+        android:hint="@string/entrez_votre_nom"/>
+
+    <EditText
+        android:id="@+id/input_surname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:hint="@string/please_type_your_name"
+        android:textColorHint="#000000"
+    />
+    <TextView
+        android:id="@+id/entreee_age"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/indiquez_votre_age"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <CheckBox
+        android:id="@+id/femaleCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="100dp"
+        android:text="Feminin"
+        android:textColor="#FFFFFF"
+
+
+        />
+
+    <CheckBox
+        android:id="@+id/maleCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+
+        android:text="Masculin" />
+
+</LinearLayout>
+    <Button
+        android:id="@+id/play_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="25dp"
+        android:textColor="#000000"
+        android:text="@string/let_s_play" />
+
+    <Button
+        android:id="@+id/dataButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+
+        android:text="@string/donn_es_r_colt_es"
+        />
+
+
+</LinearLayout>

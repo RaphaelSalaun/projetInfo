@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    >
+
+
+    <TextView
+        android:id="@+id/titre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description_des_r_gles_du_jeu"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description_jeu"
+        android:textSize="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/titre"
+        android:id="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/charlieImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp"
+        android:layout_marginBottom="25dp"
+        android:scaleType="fitXY"
+
+        app:srcCompat="@drawable/cible" />
+
+    <Button
+        android:id="@+id/appuyez_pour_jouer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+
+        android:layout_below="@id/charlieImage"
+        android:text="@string/appuyez_pour_jouer"/>
+
+</RelativeLayout>

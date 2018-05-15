@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="app_name">projetInfo</string>
+    <string name="bienvenue_dans_l_interface_du_jeu">Bienvenue dans l\'interface du jeu</string>
+    <string name="please_type_your_name">Entrez votre prénom</string>
+    <string name="entrez_votre_nom">Entrez votre nom</string>
+    <string name="let_s_play">Appuyez pour jouer au jeu</string>
+    <string name="indiquez_votre_age">Indiquez votre âge : </string>
+
+    <string name="appuyez_pour_jouer">Appuyez pour jouer</string>
+    <string name="description_des_r_gles_du_jeu">Description des règles du jeu :</string>
+    <string name="description_jeu">Le but du jeu est de trouver l\'oiseau (photo ci-dessous) avec le plus de rapidité et de précision possible avec votre doigt ! Il y aura 5 tests à la suite. L\'activité commence dès que vous appuyez sur le bouton ci-dessous, donc préparez vous ! Bonne chance.</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="recommencer">Passer au test suivant (total = 5)</string>
+    <string name="hey">Hey</string>
+    <string name="donn_es_r_colt_es">Données récoltées</string>
+
+</resources>
