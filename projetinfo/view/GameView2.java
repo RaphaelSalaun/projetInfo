@@ -2,29 +2,26 @@ package com.example.xx_laphoune_xx.projetinfo.view;
 
 /**
  * Created by Xx_LaPhoune_xX on 27/04/2018.
+ *  Custom view qui est l'interface graphique des test
  */
 
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.MotionEvent;
 
 import com.example.xx_laphoune_xx.projetinfo.R;
-import com.example.xx_laphoune_xx.projetinfo.controller.GameActivity;
-import com.example.xx_laphoune_xx.projetinfo.controller.Main3Activity;
-import com.example.xx_laphoune_xx.projetinfo.controller.MainActivity;
+import com.example.xx_laphoune_xx.projetinfo.controller.PremiereActivity;
 import com.example.xx_laphoune_xx.projetinfo.model.DatabaseManager;
-
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,8 +51,11 @@ public class GameView2 extends View {
     private float mPrecision;
     private DatabaseManager db;
 
-    private Intent mIntent = new Intent(this.getContext(), MainActivity.class);
+    private int maxsize;
 
+    private Intent mIntent; // = new Intent(this.getContext(), PremiereActivity.class);
+
+    // 4 méthodes constructeur selon les différents arguments renseignés (selon les versions d'android)
     public GameView2(Context context) {
         super(context);
         init(null);
@@ -78,15 +78,17 @@ public class GameView2 extends View {
     }
 
 
-
+// Méthode ou on initialise toutes les valeurs a utiliser
     private void init(@Nullable AttributeSet set) {
+
         mEcureil = (BitmapFactory.decodeResource(getResources(), R.drawable.ecureil));
         mCible = BitmapFactory.decodeResource(getResources(), R.drawable.cible2);
         myView = findViewById(R.id.GameView2);
-
+        mIntent = new Intent(this.getContext(), PremiereActivity.class);
         db = new DatabaseManager(getContext());
 
         mBitmapList = new ArrayList<>();
+// Remplisage de la liste avec les images fournies
 
         mBitmapList.add(mCible);
         mBitmapList.add(BitmapFactory.decodeResource(getResources(),R.drawable.chemineex2));
@@ -126,16 +128,48 @@ public class GameView2 extends View {
 
         }
         for (int r = 0; r < 6; r++) {
-            mBitmapList.add(BitmapFactory.decodeResource(getResources(),R.drawable.tonneau7));
+            mBitmapList.add(BitmapFactory.decodeResource(getResources(),R.drawable.retonneau));
         }
         for (int l = 0; l < 6; l++) {
             mBitmapList.add(BitmapFactory.decodeResource(getResources(),R.drawable.couronnex7));
         }
+        // Shuffle = on réordonne aléatoirement la liste pour que l'image cible soit a une place différente a chaque fois
         Collections.shuffle(mBitmapList);
         cibleIndex = mBitmapList.indexOf(mCible);
 
     }
+    public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
 
+        float scaleX = newWidth / (float) bitmap.getWidth();
+        float scaleY = newHeight / (float) bitmap.getHeight();
+        float pivotX = 0;
+        float pivotY = 0;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scaleX, scaleY, pivotX, pivotY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+    }
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         myView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -145,14 +179,25 @@ public class GameView2 extends View {
         x = mWidth / 5;
         y = mHeight / 10;
 
-        mCible = Bitmap.createScaledBitmap(mCible, x, y, false);
-        mEcureil = Bitmap.createScaledBitmap(mEcureil, x, y, false);
+        if(x>y) {
+            maxsize = y;
+
+        } else {
+            maxsize = x;
+        }
+
+// Mise a l'échelle voulue des images
+       /* mCible = Bitmap.createScaledBitmap(mCible, x, y, true);
+        mEcureil = Bitmap.createScaledBitmap(mEcureil, x, y, true);*/
 
         for (int f = 0; f < 50; f++) {
             if (mBitmapList.get(f) != null) {
-                canvas.drawBitmap(Bitmap.createScaledBitmap(mBitmapList.get(f), x, y, false), x * (f % 5), y * (f / 5), null);
+                // On dessine les images sur le canvas
+                canvas.drawBitmap(getResizedBitmap(mBitmapList.get(f), maxsize), x * (f % 5), y * (f / 5), null);
+           // canvas.drawBitmap(scaleBitmap(mBitmapList.get(f),x,y), x * (f % 5), y * (f / 5), null);
             }
         }
+        // On recupere le temps de début
         startTime = System.currentTimeMillis();
     }
 
@@ -161,8 +206,11 @@ public class GameView2 extends View {
         return super.toString();
     }
 
+
+//Méthode appelée a chaque toucher
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        // On prend les positions du toucher apposé + position de la cible
         eventX = event.getX();
         eventY = event.getY();
         Xcible = x * (cibleIndex % 5) + mCible.getWidth() / 2;
@@ -170,12 +218,17 @@ public class GameView2 extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mPrecision = (float) pow(pow((Xcible - eventX), 2) + pow((Ycible - eventY), 2), 0.5);
 
+                // on calcule la distance entre le toucher de l'utilisateur et le centre de la cible
+                mPrecision = (float) pow(pow((Xcible - eventX), 2) + pow((Ycible - eventY), 2), 0.5);
+                // On prend la date du toucher
                 touchTime = System.currentTimeMillis();
-        //        Toast.makeText(getContext(),cibleIndex + "   size + " + String.valueOf((touchTime - startTime)) + " est le temps mis, index est " + String.valueOf(cibleIndex) + " precision" + String.valueOf(mPrecision), Toast.LENGTH_LONG).show();
+
+                // On insere les valeurs dans notre base de données
                 db.insertUserScore(mPrecision, touchTime - startTime, event.getPressure(), 2);
                 db.close();
+
+                // On lance l'intent pour retourner a la première vue
                 getContext().startActivity(mIntent);
 
                 break;

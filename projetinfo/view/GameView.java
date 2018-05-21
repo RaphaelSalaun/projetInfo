@@ -16,13 +16,8 @@ import android.view.View;
 import android.view.MotionEvent;
 
 import com.example.xx_laphoune_xx.projetinfo.R;
-import com.example.xx_laphoune_xx.projetinfo.controller.GameActivity;
-import com.example.xx_laphoune_xx.projetinfo.controller.Main3Activity;
-import com.example.xx_laphoune_xx.projetinfo.controller.MainActivity;
+import com.example.xx_laphoune_xx.projetinfo.controller.TimerActivity;
 import com.example.xx_laphoune_xx.projetinfo.model.DatabaseManager;
-
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +28,8 @@ public class GameView extends View {
 
     private Bitmap mCible;
     private Bitmap mEcureil;
+
+    private Bitmap mEcureilretourne;
 
     private ArrayList<Bitmap> mBitmapList;
 
@@ -52,7 +49,7 @@ public class GameView extends View {
     private float mPrecision;
     private DatabaseManager db;
 
-    private Intent mIntent = new Intent(this.getContext(), Main3Activity.class);
+    private Intent mIntent = new Intent(this.getContext(), TimerActivity.class);
 
     public GameView(Context context) {
         super(context);
@@ -73,32 +70,40 @@ public class GameView extends View {
     }
 
     private void init(@Nullable AttributeSet set) {
+
+        // différentes images utilisées
         mEcureil = (BitmapFactory.decodeResource(getResources(), R.drawable.ecureil));
-        mCible = BitmapFactory.decodeResource(getResources(), R.drawable.cible);
+        mCible = BitmapFactory.decodeResource(getResources(), R.drawable.lapinretourne);
+        mEcureilretourne = (BitmapFactory.decodeResource(getResources(), R.drawable.ecureilretourne));
+
         myView = findViewById(R.id.GameView);
-        TypedArray a = getContext().obtainStyledAttributes(set,
-                R.styleable.GameView, 0, 0);
-       // Bitmap test = BitmapFactory.decodeResource(getResources(), a.getResourceId(R.styleable.GameView_cible,R.drawable.cible));
-       // mCible = test;
-
+// ouverture de notre base de données
         db = new DatabaseManager(getContext());
-
+// liste de nos images qu'on va peupler
         mBitmapList = new ArrayList<>();
 
+        // début  phase de peuplage
         mBitmapList.add(mCible);
-        for (int k = 0; k < 24; k++) {
+
+        for (int k = 0; k < 16; k++) {
             mBitmapList.add(mEcureil);
         }
-        for (int l = 0; l < 25; l++) {
+        for (int k = 0; k < 16; k++) {
+            mBitmapList.add(mEcureilretourne);
+        }
+        for (int l = 0; l < 17; l++) {
             mBitmapList.add(null);
         }
+        // fin  phase de peuplage
+
+        // mélange des images
         Collections.shuffle(mBitmapList);
         cibleIndex = mBitmapList.indexOf(mCible);
-        a.recycle();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        //on recupère la taille de notre écran
         myView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         mHeight = myView.getHeight();
         mWidth = myView.getWidth();
@@ -106,14 +111,13 @@ public class GameView extends View {
         x = mWidth/5;
         y = mHeight/10;
 
-        mCible= Bitmap.createScaledBitmap(mCible,x, y ,false);
-        mEcureil = Bitmap.createScaledBitmap(mEcureil,x,y,false);
-
-        for(int f=0;f<50;f++) {
+        // on dessine nos images mises a l'échelle
+        for(int f=0; f<50; f++) {
                 if (mBitmapList.get(f) != null) {
-                   canvas.drawBitmap(Bitmap.createScaledBitmap(mBitmapList.get(f), x, y, false), x*(f%5) , y * (f/5), null);
+                   canvas.drawBitmap(Bitmap.createScaledBitmap(mBitmapList.get(f), x, y, true), x*(f%5) , y * (f/5), null);
                 }
         }
+        // on prend le temps du début du test
         startTime = System.currentTimeMillis();
     }
     @Override
@@ -121,8 +125,10 @@ public class GameView extends View {
         return super.toString();
     }
 
+    // méthode pour détecter le toucher de l'utilisateur
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        // prise des coordonnées du toucher
         eventX = event.getX();
         eventY = event.getY();
         Xcible = x*(cibleIndex%5) + mCible.getWidth()/2 ;
@@ -138,9 +144,12 @@ public class GameView extends View {
                 mPrecision = (float) pow(pow((Xcible - eventX), 2) + pow((Ycible - eventY), 2), 0.5);
 
                 touchTime = System.currentTimeMillis();
-               // Toast.makeText(getContext(), String.valueOf((touchTime-startTime))+ " est le temps mis, index est " + String.valueOf(cibleIndex)+ " precision"+ String.valueOf(mPrecision),Toast.LENGTH_LONG).show();
+
+                // on insere les infos recoltées
                 db.insertUserScore(mPrecision,touchTime-startTime, event.getPressure(),1);
                 db.close();
+
+                // lancement de l'intent pour retourner au debut de l'application
                 getContext().startActivity(mIntent);
                 break;
         }

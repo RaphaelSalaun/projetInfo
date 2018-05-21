@@ -19,6 +19,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         super(context,DATABASE_NAME,null, DATABASE_VERSION);
     }
 
+    // Methode pour créer la base de donnée sqlite
     @Override
     public void onCreate(SQLiteDatabase db) {
         String creationBDD = "create table userInfo ("
@@ -43,9 +44,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Log.i("DATABASE", "on create invoked");
     }
 
+    // Méthode pour mettre a jour la base de donnée si le numéro de version est modifié (si le schéma est modifié)
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // no upgrade required hopefully
+
         String strSql = "drop table if exists userInfo  ";
         db.execSQL(strSql);
         String sql2 = "drop table if exists userScores";
@@ -54,7 +56,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Log.i("DATABASE", "on upgrade invoked");
 
     }
-
+// Méthode utilisée pour inserer les infos de l'utilisateur recupérées lors de la première activité
     public void insertUserInfo(String nom, String prenom, String sexe, String age) {
         nom = nom.replace(" ' "," ''");
         String sqlInsertion = "insert into userInfo (name, surname, sex, age) values ('"
@@ -62,11 +64,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         this.getWritableDatabase().execSQL(sqlInsertion);
     }
 
+// Méthode utilisée pour inserer les infos recupérées lors des test
     public void insertUserScore(float precision, float time, float pressure, int tryNumber) {
         String sqlcode = "insert into userScores (userID, precision,  time, pressure, tryNumber) values ('"
                 + getLastId() + "','" + precision + "','"  +  time  + "','" + pressure + "','" + tryNumber + "')";
         this.getWritableDatabase().execSQL(sqlcode);
     }
+
+
     public int getLastId() {
         String sql = " select\n" +
                 "    \"idUser\"\n" +
@@ -81,6 +86,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         curseur.close();
         return lastId;
     }
+
+
+    // Methode pour recuperer la liste de tous les users et leurs résultats
     public List<User> getUserScores() {
         List<User> scores = new ArrayList<>();
 
@@ -91,6 +99,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         Cursor cursor  = this.getWritableDatabase().rawQuery(sql, null);
         cursor.moveToFirst();
 
+        // On recupere les infos
         while (! cursor.isAfterLast()) {
             User newUser = new User(cursor.getString(0),cursor.getString(1),
                     cursor.getString(2), cursor.getString(3), cursor.getInt(4),

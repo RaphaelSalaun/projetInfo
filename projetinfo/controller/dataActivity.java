@@ -10,6 +10,8 @@ import com.example.xx_laphoune_xx.projetinfo.model.User;
 
 import java.util.List;
 
+// Activité où on accède aux scores renseignés dans la base de donnée
+
 public class dataActivity extends AppCompatActivity {
 
     private TextView scoreView;
