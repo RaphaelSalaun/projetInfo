@@ -23,16 +23,20 @@ public class dataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_data);
 
         scoreView = findViewById(R.id.scoreView);
+
+        // On ouvre notre BDD specifique a l'application
         db = new DatabaseManager(this);
 
+        // On recupère la liste de tous les scores
         List<User> userScores = db.getUserScores();
 
+       // On affiche tous les scores
         for (User user : userScores) {
             scoreView.append(user.toString() + "\n\n");
         }
 
 
-
+        // On ferme la BDD pour eviter une fuite de mémoire
         db.close();
     }
 }

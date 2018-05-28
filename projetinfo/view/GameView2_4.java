@@ -1,34 +1,39 @@
 package com.example.xx_laphoune_xx.projetinfo.view;
 
 /**
- * Created by Xx_LaPhoune_xX on 27/04/2018.
- *  Custom view qui est l'interface graphique des test
+ * Created by Xx_LaPhoune_xX on 22/05/2018.
  */
-
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.xx_laphoune_xx.projetinfo.R;
 import com.example.xx_laphoune_xx.projetinfo.controller.PremiereActivity;
-import com.example.xx_laphoune_xx.projetinfo.controller.SerieTest2.Test2_1Activity;
+import com.example.xx_laphoune_xx.projetinfo.controller.SerieTest2.Test2_5Activity;
 import com.example.xx_laphoune_xx.projetinfo.model.DatabaseManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import static java.lang.Math.pow;
 
-public class GameView2 extends View {
+import static java.lang.Math.pow;
+/**
+ * Created by Xx_LaPhoune_xX on 22/05/2018.
+ */
+
+
+
+
+
+public class GameView2_4 extends View {
     private View myView;
 
     private Bitmap mCible;
@@ -55,37 +60,38 @@ public class GameView2 extends View {
 
     private int maxsize;
 
-    private Intent mIntent = new Intent(this.getContext(), Test2_1Activity.class);
+    private Intent mIntent; // = new Intent(this.getContext(), PremiereActivity.class);
 
     // 4 méthodes constructeur selon les différents arguments renseignés (selon les versions d'android)
-    public GameView2(Context context) {
+    public GameView2_4(Context context) {
         super(context);
         init(null);
     }
 
-    public GameView2(Context context, @Nullable AttributeSet attrs) {
+    public GameView2_4(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         init(attrs);
     }
 
-    public GameView2(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GameView2_4(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
-    public GameView2(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public GameView2_4(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
 
 
-// Méthode ou on initialise toutes les valeurs a utiliser
+    // Méthode ou on initialise toutes les valeurs a utiliser
     private void init(@Nullable AttributeSet set) {
 
         mEcureil = (BitmapFactory.decodeResource(getResources(), R.drawable.ecureil));
         mCible = BitmapFactory.decodeResource(getResources(), R.drawable.cible2);
-        myView = findViewById(R.id.GameView2);
+        myView = findViewById(R.id.GameView2_4);
+        mIntent = new Intent(this.getContext(), Test2_5Activity.class);
         db = new DatabaseManager(getContext());
 
         mBitmapList = new ArrayList<>();
@@ -195,7 +201,7 @@ public class GameView2 extends View {
             if (mBitmapList.get(f) != null) {
                 // On dessine les images sur le canvas
                 canvas.drawBitmap(getResizedBitmap(mBitmapList.get(f), maxsize), x * (f % 5), y * (f / 5), null);
-           // canvas.drawBitmap(scaleBitmap(mBitmapList.get(f),x,y), x * (f % 5), y * (f / 5), null);
+                // canvas.drawBitmap(scaleBitmap(mBitmapList.get(f),x,y), x * (f % 5), y * (f / 5), null);
             }
         }
         // On recupere le temps de début
@@ -208,7 +214,7 @@ public class GameView2 extends View {
     }
 
 
-//Méthode appelée a chaque toucher
+    //Méthode appelée a chaque toucher
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // On prend les positions du toucher apposé + position de la cible
@@ -253,3 +259,4 @@ public class GameView2 extends View {
         return true;
     }
 }
+

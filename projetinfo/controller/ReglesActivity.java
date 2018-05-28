@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.xx_laphoune_xx.projetinfo.R;
+import com.example.xx_laphoune_xx.projetinfo.controller.SerieTest1.Test1Activity;
 
 public class ReglesActivity extends AppCompatActivity {
 

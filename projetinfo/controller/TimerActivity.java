@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.xx_laphoune_xx.projetinfo.R;
+import com.example.xx_laphoune_xx.projetinfo.controller.SerieTest2.Test2Activity;
 
 public class TimerActivity extends AppCompatActivity {
 
@@ -24,10 +26,12 @@ public class TimerActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                Intent intent = new Intent(TimerActivity.this,Test2Activity.class);
-                startActivity(intent);
+                Intent intento = new Intent(getApplicationContext() , Test2Activity.class);
+                startActivity(intento);
+                Log.i("TIMER","Onfinish atteint, intent lancé");
             }
         }.start();
+
 
     }
 }
