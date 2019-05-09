@@ -44,7 +44,7 @@ public class Client extends AsyncTask<Void, Void, String> {
             reader = new BufferedInputStream(socket.getInputStream());
             //On envoie les donnÃ©es au serveur
 
-            String donnees = "Nikita Belluci Femme données";
+            String donnees = "données";
             writer.write(donnees);
             writer.flush();
             // System.out.println("Données envoyées au serveur");
